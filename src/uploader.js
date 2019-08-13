@@ -3,8 +3,8 @@ import ReactS3 from 'react-s3';
 
 require('dotenv').config();
 
+const imageRegex = /\.(jpe?g|png|gif|bmp|tiff)$/i;
 
- 
 const config = {
     bucketName: 'a365-doc-import-poc',
     dirName: 'docs', 
@@ -15,13 +15,18 @@ const config = {
 
 class Uploader extends Component {
     state = { files: null }
+    
     upload = e => {
+        if(imageRegex.test(e.target.files[0].name)) {
+            console.log('file is an image');
+        };
         console.log(e.target.files[0]);
         ReactS3.uploadFile(e.target.files[0] , config)
         .then((data) => {
-            console.log(data);
+            console.log(data.location);
         })
         .catch((err) => {
+            console.log('failed:');
             console.log(err);
         })
     }
