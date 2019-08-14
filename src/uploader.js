@@ -1,27 +1,21 @@
+
 import React, { Component } from 'react';
 import ReactS3 from 'react-s3';
-
-require('dotenv').config();
+import { uploadFile } from 'react-s3';
+import AWSconfig from './config';
 
 const imageRegex = /\.(jpe?g|png|gif|bmp|tiff)$/i;
 
-const config = {
-    bucketName: 'a365-doc-import-poc',
-    dirName: 'docs', 
-    region: 'eu-west-1',
-    accessKeyId: process.env.AWS_ID,
-    secretAccessKey: process.env.AWS_SECRET,
-}
-
 class Uploader extends Component {
     state = { files: null }
-    
     upload = e => {
+        console.log(AWSconfig);
         if(imageRegex.test(e.target.files[0].name)) {
             console.log('file is an image');
         };
-        console.log(e.target.files[0]);
-        ReactS3.uploadFile(e.target.files[0] , config)
+       
+        const file = e.target.files[0];
+        uploadFile(file , AWSconfig)
         .then((data) => {
             console.log(data.location);
         })

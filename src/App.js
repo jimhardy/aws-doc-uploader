@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Uploader from './uploader';
+// import Loading from '/loading';
 
-function App() {
-  return (
-    <div className="App">
-     <Uploader />
-    </div>
-  );
+
+class App extends Component {
+  state = { loading: true }
+  render() { 
+    return ( 
+      <div className="App">
+
+      <Uploader />
+     </div>
+     );
+  }
 }
-
+ 
 export default App;
+
