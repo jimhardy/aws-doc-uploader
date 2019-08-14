@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import './App.css';
-import Uploader from './uploader';
+import React, { Component } from 'react'
+import './App.css'
+import Uploader from './uploader'
 // import Loading from '/loading';
 
-
 class App extends Component {
-  render() { 
-    return ( 
+  render() {
+    return (
       <div className="App">
-      <Uploader />
-     </div>
-     );
+        <Uploader />
+      </div>
+    )
   }
 }
- 
-export default App;
 
+export default App
