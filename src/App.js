@@ -5,11 +5,9 @@ import Uploader from './uploader';
 
 
 class App extends Component {
-  state = { loading: true }
   render() { 
     return ( 
       <div className="App">
-
       <Uploader />
      </div>
      );

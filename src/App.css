@@ -2,10 +2,19 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
+.Loading {
+  animation: Loading-spin infinite 5s linear;
   height: 40vmin;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 25px 5px 5px 55px;
+  font-size: 1em;
+  /* position: absolute; */
+  width: 200px;
+  height: 200px;
 }
 
 .App-header {
@@ -23,7 +32,7 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@keyframes Loading-spin {
   from {
     transform: rotate(0deg);
   }

@@ -7,8 +7,12 @@ const multer = require('multer')
 app.use(cors());
 
 app.post('/upload', (req, res) => {
-    console.log(req);
-  });
+  //  need to use multer
+   console.log('file received by server');
+   console.log(req.body);
+   const values = Object.values(req);
+   console.log(values);
+});
 
 
   app.post('/proclaimpush' , (req , res) => {
@@ -16,11 +20,11 @@ app.post('/upload', (req, res) => {
   });
   
   // start server
-  app.listen(process.env.PORT, process.env.IP, err => {
+  app.listen(8000, 'localhost', err => {
     if (err) {
       console.error(err);
     } else {
-      console.log(`server started on ${process.env.PORT}`);
+      console.log(`server started on 8000`);
     }
   });
   
