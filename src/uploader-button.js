@@ -6,7 +6,7 @@ export default props => (
   <div className="buttons fadein">
     <div className="button">
       <label htmlFor="multi">
-        <FontAwesomeIcon icon={faFileUpload} color="#6d84b4" size="11x" />
+        <FontAwesomeIcon icon={faFileUpload} className="Upload-icon" />
       </label>
       <input type="file" id="multi" onChange={props.onChange} multiple />
     </div>

@@ -3,14 +3,17 @@ import { API_URL } from './config'
 import UploaderButton from './uploader-button'
 import Loading from './loading'
 import axios from 'axios'
-const imageRegex = /\.(jpe?g|png|gif|bmp|tiff)$/i
+// const imageRegex = /\.(jpe?g|png|gif|bmp|tiff)$/i
 
 class Uploader extends Component {
-  state = { uploading: false, files: null }
-  onChange = e => {
+  constructor(props) {
+    super(props);
+    this.state = { uploading: false, files: null }
+this.onChange = this.onChange.bind(this);
+  }
+  async onChange(e) {
     const errs = []
     const files = Array.from(e.target.files)
-
     if (files.length > 10) {
       const msg = 'Only 10 files can be uploaded at a time'
       console.log(msg)
@@ -18,30 +21,23 @@ class Uploader extends Component {
 
     const formData = new FormData()
 
-    files.forEach((file, i) => {
-      if (imageRegex.test(file)) {
-        errs.push(`'${file.type}' is not a supported format`)
-      } else {
-        console.log('adding files to formData')
+    // append formData with files from file array
+    await files.forEach((file, i) => {
         formData.append(i, file)
-      }
-      // if (file.size > 150000) {
-      //   errs.push(`'${file.name}' is too large, please pick a smaller file`);
-      // }
     })
-
     if (errs.length) {
       return errs.forEach(err => console.log(err))
     }
 
-    this.setState({
+    await this.setState({
       uploading: true,
       files: formData
     })
 
-    axios
-      .post(`${API_URL}/upload`, formData, {
-        data: formData
+    await axios
+      .post(`${API_URL}/upload`,  {
+      data: this.state.files
+
       })
       .then(res => {
         console.log(res)
