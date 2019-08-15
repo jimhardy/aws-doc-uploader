@@ -11,6 +11,7 @@ app.use(cors());
 
 const s3 = new aws.S3()
 
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 let upload = multer({
@@ -18,15 +19,40 @@ let upload = multer({
     s3: s3,
     bucket: config.bucketName,
     key: (req, file, cb) => {
-      console.log(file);
       cb(null, Date.now().toString());
     }
   })
 });
 
-app.post('/upload', upload.array('files', 10) , (req, res, next) => {
-  console.log(`server side: ${req.body}`);
-   res.send(`Successfully uploaded ${req.files}`)
+const uploadToS3 = (file) => {
+let s3bucket = new aws.S3({
+  accessKeyId: config.accessKeyId,
+  secretAccessKey: config.secretAccessKey,
+  bucket: config.bucketName
+}
+);
+s3bucket.createBucket(() => {
+  const params = {
+    Bucket: config.bucketName,
+    Key: file.name,
+    Body: file.data
+  };
+  s3bucket.upload(params , (err , data) => {
+    if(err){
+      console.log('error in callback');
+      console.log(err);
+    }
+    console.log('success');
+    console.log(data);
+  });
+});
+};
+
+app.post('/upload', (req, res, next) => {
+  uploadToS3(req).then(
+    res.send(`Successfully uploaded ${req.files}`)
+  )
+
 });
 
 

@@ -12,32 +12,41 @@ class Uploader extends Component {
 this.onChange = this.onChange.bind(this);
   }
   async onChange(e) {
-    const errs = []
-    const files = Array.from(e.target.files)
+    const errs = [];
+    const files = Array.from(e.target.files);
+
     if (files.length > 10) {
-      const msg = 'Only 10 files can be uploaded at a time'
-      console.log(msg)
+      const msg = 'Only 10 images can be uploaded at a time';
+      errs.push(msg);
     }
 
-    const formData = new FormData()
+    const formData = new FormData();
+    const types = ['image/png', 'image/jpeg', 'image/gif'];
 
-    // append formData with files from file array
-    await files.forEach((file, i) => {
-        formData.append(i, file)
-    })
+    files.forEach((file, i) => {
+      if (types.every(type => file.type !== type)) {
+        errs.push(`'${file.type}' is not a supported format`);
+      }
+
+      if (file.size > 2000000) {
+        errs.push(`'${file.name}' is too large, please pick a smaller file`);
+      }
+
+      formData.append(i, file);
+    });
+
     if (errs.length) {
-      return errs.forEach(err => console.log(err))
     }
 
-    await this.setState({
-      uploading: true,
-      files: formData
-    })
+    this.setState({ uploading: true });
 
+    // fetch(`${API_URL}/upload`, {
+    //   method: 'POST',
+    //   body: formData
+    // })
     await axios
-      .post(`${API_URL}/upload`,  {
-      data: this.state.files
-
+      .post(`${API_URL}/upload`, {
+        data: this.state.files
       })
       .then(res => {
         console.log(res)
